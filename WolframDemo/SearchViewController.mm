@@ -51,6 +51,8 @@
     self.pathToGrammarToStartAppWith = [[NSBundle mainBundle] pathForResource:@"hub4.5000" ofType:@"DMP"];
      
     self.pathToDictionaryToStartAppWith = [[NSBundle mainBundle] pathForResource:@"hub4.5000" ofType:@"dic"];
+    
+    textField.font=[UIFont fontWithName:kFont size:14.0];
 }
 
 - (void)viewDidUnload
@@ -103,6 +105,10 @@
         [btn setSelected:YES];
         [self startListening];
     }
+}
+
+- (IBAction)bgTapped:(id)sender {
+    [textField resignFirstResponder];
 }
 
 #pragma mark -

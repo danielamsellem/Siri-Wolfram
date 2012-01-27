@@ -16,7 +16,7 @@ The external libraries used by this app are:
 * [TouchXML](https://github.com/TouchCode/TouchXML), for the parsing of the WolframAlpha API XML response
 * [ASIHTTPRequest](http://allseeing-i.com/ASIHTTPRequest/) for the HTTP requests.
 
-For a more information on these libraries and on how to install use them and use them in your project visit the corresponding websites.
+For more information on these libraries and on how to install and use them in your project visit the corresponding websites.
 
 Specifically for OpenEars, in addition to the instructions described in the it's [website](http://www.politepix.com/openears) in order to make it work in this project I set the Header Search Paths both on project settings and the target settings.
 

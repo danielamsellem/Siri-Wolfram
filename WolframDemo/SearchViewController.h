@@ -47,4 +47,5 @@
 
 - (IBAction)backBtnPressed:(id)sender;
 - (IBAction)voiceBtnPressed:(id)sender;
+- (IBAction)bgTapped:(id)sender;
 @end
