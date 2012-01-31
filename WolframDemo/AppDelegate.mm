@@ -27,6 +27,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self.audioSessionManager startAudioSession];
+    
     NSLog(@"Family names:%@",[UIFont familyNames]);
     NSLog(@"Fonts:%@", [UIFont fontNamesForFamilyName:@"PF Highway Gothic Ext"]);
     // PFHighwayGothicExtLight

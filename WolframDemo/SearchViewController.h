@@ -29,6 +29,8 @@
     BOOL listeningLoopRunning;
     BOOL waitingForResponse; //if YES, waiting for the user to answer YES or NO 
     
+    UIAlertView *alert;
+    
 }
 @property (retain, nonatomic) IBOutlet UITextField *textField;
 @property (nonatomic, retain) PocketsphinxController *pocketsphinxController;

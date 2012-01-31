@@ -144,19 +144,34 @@
 
 // An optional delegate method of OpenEarsEventsObserver which delivers the text of speech that Pocketsphinx heard and analyzed, along with its accuracy score and utterance ID.
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
+    [self hideLoadingIndicators];
+    if (alert!=nil) {
+        [alert dismissWithClickedButtonIndex:-1 animated:NO];
+    }
+    if (waitingForResponse && [[hypothesis lowercaseString] isEqualToString:@"yes"]) {
+        waitingForResponse=NO;
+        [self.pocketsphinxController stopListening];
+        [recordButton setSelected:NO];
+        listeningLoopRunning=NO;
+        [self searchForTerm:currentHypothesis];
+        return;
+    }
+    else if (waitingForResponse && [[hypothesis lowercaseString] isEqualToString:@"no"]){
+        waitingForResponse=NO;
+        return;
+    }
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID); // Log it.
 	self.currentHypothesis=hypothesis;
     // This is how to use an available instance of FliteController. We're going to repeat back the command that we heard with the voice we've chosen.
-//	[self.fliteController say:[NSString stringWithFormat:@"Do you want me to search for %@",hypothesis] withVoice:self.firstVoiceToUse];
-    [self hideLoadingIndicators];
-    UIAlertView *alert = [[UIAlertView alloc] 
+	[self.fliteController say:[NSString stringWithFormat:@"Do you want me to search for %@",hypothesis] withVoice:self.firstVoiceToUse];
+    alert = [[UIAlertView alloc] 
                           initWithTitle:@""
-                          message:[NSString stringWithFormat:@"Search for \"%@\"",hypothesis]
+                          message:[NSString stringWithFormat:@"Search for \"%@\"?",hypothesis]
                           delegate:self 
                           cancelButtonTitle:@"NO" 
-                          otherButtonTitles:@"OK", nil];
+                          otherButtonTitles:@"YES", nil];
     [alert show];
-    [alert release];
+    waitingForResponse=YES;
 }
 
 // An optional delegate method of OpenEarsEventsObserver which informs that there was an interruption to the audio session (e.g. an incoming phone call).
@@ -212,7 +227,7 @@
 	self.fliteController.target_mean = 1.2; // Change the pitch
 	self.fliteController.target_stddev = 1.5; // Change the variance
 	
-//	[self.fliteController say:@"Welcome to OpenEars." withVoice:self.firstVoiceToUse]; // The same statement with the pitch and other voice values changed.
+	[self.fliteController say:@"What do you want me to search?" withVoice:self.firstVoiceToUse]; // The same statement with the pitch and other voice values changed.
 	
 	self.fliteController.duration_stretch = 1.0; // Reset the speed
 	self.fliteController.target_mean = 1.0; // Reset the pitch
@@ -318,6 +333,8 @@
         listeningLoopRunning=NO;
        [self searchForTerm:currentHypothesis] ;
     }
+    [alert release];
+    alert=nil;
 }
 
 #pragma mark - Other Methods
